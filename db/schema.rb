@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101103651) do
+ActiveRecord::Schema.define(version: 20151105122150) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "title"
@@ -19,15 +19,42 @@ ActiveRecord::Schema.define(version: 20151101103651) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "categories_posts", force: :cascade do |t|
+    t.integer "category_id"
+    t.integer "post_id"
+  end
+
+  add_index "categories_posts", ["category_id"], name: "index_categories_posts_on_category_id"
+  add_index "categories_posts", ["post_id"], name: "index_categories_posts_on_post_id"
+
   create_table "comments", force: :cascade do |t|
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "post_id"
+  end
+
+  add_index "comments", ["post_id"], name: "index_comments_on_post_id"
+
+  create_table "posts", force: :cascade do |t|
+    t.string   "title"
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "posts", force: :cascade do |t|
+  create_table "profiles", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
     t.string   "title"
-    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
