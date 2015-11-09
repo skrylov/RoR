@@ -1,4 +1,9 @@
-<%= link_to 'Comments', comments_path %>
+
 <%= link_to 'New Post', new_post_path %>
 <%= link_to 'Categories', categories_path %>
 <%= link_to 'New category', new_category_path %>
+
+<h1>Recent posts</h1>
+
+
+<%= render "posts/post" %>
