@@ -1,5 +1,7 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :owner_check, only: [:edit, :update, :destroy]
 
   # GET /comments
   # GET /comments.json
@@ -27,12 +29,13 @@ class CommentsController < ApplicationController
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.new(comment_params)
+    @comment.user = current_user
 
 
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
+        format.html { redirect_to @post, notice: 'Comment was successfully created.' }
 
       else
         format.html { render :new }
@@ -60,7 +63,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
+      format.html { redirect_to @comment.post, notice: 'Comment was successfully destroyed.' }
 
     end
   end
@@ -75,4 +78,13 @@ class CommentsController < ApplicationController
     def comment_params
       params.require(:comment).permit(:body, :post_id)
     end
+
+    def owner_check
+      @comment = Comment.find(params[:id])
+      if current_user != @comment.user
+        redirect_to posts_path, notice: 'У вас нет прав на выполнение этого действия'
+      end
+    end
+
+
 end
