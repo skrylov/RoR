@@ -85,6 +85,6 @@ Rails.application.configure do
       user_name: ENV['MAILGUN_SMTP_LOGIN'],
       password: ENV['MAILGUN_SMTP_PASSWORD'],
       domain: 'salty-basin-9715.herokuapp.com',
-      authentication: plain
+      authentication: :plain
   }
 end
